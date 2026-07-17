@@ -1,0 +1,19 @@
+# Локальные настройки и секреты
+.env
+.env.*
+
+# Результаты сборки и тестов Go
+backend-go/bin/
+backend-go/api
+backend-go/api.exe
+*.test
+coverage.out
+
+# Настройки редакторов
+.idea/
+.vscode/
+*.iml
+
+# Системные файлы
+.DS_Store
+Thumbs.db
