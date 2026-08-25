@@ -9,6 +9,12 @@ backend-go/api.exe
 *.test
 coverage.out
 
+# Личные учебные ответы и выгрузки для наставника
+mentorforge_answers_*.md
+mentorforge_all_answers.md
+mentorforge_submission_*.md
+mentorforge_all_submissions.md
+
 # Настройки редакторов
 .idea/
 .vscode/
