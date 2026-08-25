@@ -1,0 +1,54 @@
+{{define "lesson-complete"}}
+{{template "layout-start" .}}
+<div class="lesson-shell lesson-shell--complete" data-lesson-page="complete">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span>
+        <a href="/topics/{{.Topic.ID}}">{{.Topic.Title}}</a><span aria-hidden="true">/</span>
+        <span>Завершение урока</span>
+    </nav>
+
+    {{template "lesson-stages" .}}
+
+    <header class="completion-header">
+        <p class="eyebrow">Этап 4 · Итог урока</p>
+        <h1>{{.Lesson.Title}}</h1>
+        <p data-completion-message>Проверяем локальные результаты урока…</p>
+    </header>
+
+    <section class="completion-grid" aria-label="Состояние этапов">
+        <article class="completion-card" data-completion-card="lecture">
+            <span class="completion-card__mark" aria-hidden="true">1</span>
+            <div><h2>Лекция</h2><p data-completion-lecture>Не проверено</p></div>
+        </article>
+        <article class="completion-card" data-completion-card="questions">
+            <span class="completion-card__mark" aria-hidden="true">2</span>
+            <div><h2>Вопросы</h2><p data-completion-questions>0 из {{.QuestionCount}}</p></div>
+        </article>
+        <article class="completion-card" data-completion-card="practice">
+            <span class="completion-card__mark" aria-hidden="true">3</span>
+            <div><h2>Практика</h2><p data-completion-practice>Не проверено</p></div>
+        </article>
+    </section>
+
+    <section class="completion-actions">
+        <div>
+            <h2>Результаты для наставника</h2>
+            <p>Файл содержит только ваши ответы и практическое решение. Лекция и эталоны не экспортируются.</p>
+        </div>
+        <button class="button button--primary" type="button" data-export-results>Скачать результаты урока</button>
+        <p class="export-status" data-export-status role="status" aria-live="polite"></p>
+    </section>
+
+    <nav class="completion-navigation" aria-label="Дальнейшие действия">
+        <a class="button button--quiet" href="/lessons/{{.Lesson.ID}}">Вернуться к лекции</a>
+        {{if .HasNextLesson}}
+        <button class="button button--secondary" type="button" disabled data-next-lesson-disabled>Сначала завершите урок</button>
+        <a class="button button--secondary" href="/lessons/{{.NextLessonID}}" data-next-lesson hidden>{{.NextLessonLabel}}</a>
+        {{end}}
+        <button class="button button--danger" type="button" data-reset-lesson>Пройти урок заново</button>
+    </nav>
+</div>
+<script type="application/json" id="mentorforge-lesson-data">{{.RuntimeData}}</script>
+<script type="application/json" id="mentorforge-export-data">{{.ExportData}}</script>
+{{template "layout-end" .}}
+{{end}}

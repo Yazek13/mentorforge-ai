@@ -1,0 +1,113 @@
+{{define "learn"}}
+{{template "layout-start" .}}
+{{if .Empty}}
+<section class="empty-state empty-state--page">
+    <p class="eyebrow">Обучение</p>
+    <h1>{{.EmptyMessage}}</h1>
+    <p>Откройте главную страницу позднее, чтобы увидеть новые материалы.</p>
+    <a class="button button--primary" href="/">Вернуться на главную</a>
+</section>
+{{else}}
+<div class="reading-shell">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a>
+        <span aria-hidden="true">/</span>
+        <a href="/topics/{{.Topic.ID}}">{{.Topic.Title}}</a>
+        <span aria-hidden="true">/</span>
+        <span>Вопрос {{.QuestionNumber}}</span>
+    </nav>
+
+    <article class="learning-card">
+        <div class="learning-card__meta">
+            <a class="topic-chip" href="/topics/{{.Topic.ID}}">{{.Topic.Title}}</a>
+            <span class="level-badge">{{.Level}}</span>
+            <span class="question-counter">Вопрос {{.QuestionNumber}} из {{.TotalQuestions}}</span>
+        </div>
+
+        <div class="learning-card__question">
+            <p class="eyebrow">Учебный вопрос</p>
+            <h1>{{.Question.Question}}</h1>
+        </div>
+
+        <section class="user-answer" data-answer-editor data-question-id="{{.Question.ID}}">
+            <div class="user-answer__heading">
+                <div>
+                    <p class="eyebrow">Самостоятельная работа</p>
+                    <h2>Мой ответ</h2>
+                </div>
+                <span class="local-badge">Только в этом браузере</span>
+            </div>
+            <label class="visually-hidden" for="user-answer-text">Ответ своими словами</label>
+            <textarea
+                id="user-answer-text"
+                class="user-answer__textarea"
+                rows="8"
+                maxlength="12000"
+                placeholder="Сформулируйте ответ своими словами..."
+                data-answer-text
+            ></textarea>
+            <div class="user-answer__actions">
+                <button class="button button--quiet" type="button" data-save-answer>Сохранить черновик</button>
+                <button class="button button--secondary" type="button" data-submit-answer>Зафиксировать ответ</button>
+                <button class="button button--danger" type="button" data-reset-answer>Пройти урок заново</button>
+            </div>
+            <p class="answer-save-status" data-answer-status role="status" aria-live="polite">Ответ ещё не сохранён.</p>
+        </section>
+
+        <button
+            class="button button--primary answer-toggle"
+            id="answer-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="answer-content"
+        >Показать ответ</button>
+
+        <div class="answer-content" id="answer-content" hidden>
+            <section class="answer-card answer-card--simple">
+                <p class="answer-card__label">Простыми словами</p>
+                <div class="answer-card__text">{{.Question.SimpleAnswer}}</div>
+            </section>
+
+            <section class="answer-card answer-card--interview">
+                <p class="answer-card__label">Ответ для собеседования</p>
+                <div class="answer-card__text">{{.Question.InterviewAnswer}}</div>
+            </section>
+
+            <section class="answer-card answer-card--usage">
+                <p class="answer-card__label">Где применяется</p>
+                <div class="answer-card__text">{{.Question.RealUsage}}</div>
+            </section>
+
+            <section class="answer-card answer-card--follow-up">
+                <p class="answer-card__label">Дополнительные вопросы</p>
+                <ol class="follow-up-list">
+                    {{range .Question.FollowUpQuestions}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ol>
+            </section>
+
+            <section class="answer-card answer-card--practice">
+                <p class="answer-card__label">Практическое задание</p>
+                <div class="answer-card__text">{{.Question.PracticeTask}}</div>
+            </section>
+        </div>
+    </article>
+
+    <nav class="learning-navigation" aria-label="Навигация между вопросами">
+        <div class="learning-navigation__side">
+            {{if .HasPrevious}}
+            <a class="button button--quiet" href="/learn/{{.PreviousID}}">← Предыдущий вопрос</a>
+            {{end}}
+        </div>
+        <a class="text-link learning-navigation__topic" href="/topics/{{.Topic.ID}}">Вернуться к теме</a>
+        <div class="learning-navigation__side learning-navigation__side--right">
+            {{if .HasNext}}
+            <a class="button button--secondary" href="/learn/{{.NextID}}">Следующий вопрос →</a>
+            {{end}}
+        </div>
+    </nav>
+</div>
+{{end}}
+{{template "layout-end" .}}
+{{end}}

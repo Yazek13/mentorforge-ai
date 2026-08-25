@@ -1,0 +1,40 @@
+{{define "layout-start"}}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>{{.PageTitle}} — MentorForge AI</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/storage.js" defer></script>
+    <script src="/static/export.js" defer></script>
+    <script src="/static/app.js" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar__inner">
+            <a class="brand" href="/" aria-label="MentorForge AI — главная страница">
+                <span class="brand__mark" aria-hidden="true">MF</span>
+                <span>MentorForge <strong>AI</strong></span>
+            </a>
+            <nav class="topbar__nav" aria-label="Основная навигация">
+                <a href="/">Темы</a>
+                <a href="/learn">Учиться</a>
+            </nav>
+        </div>
+    </header>
+    <main class="page-shell">
+{{end}}
+
+{{define "layout-end"}}
+    </main>
+    <footer class="footer">
+        <div class="footer__inner">
+            <span>MentorForge AI</span>
+            <span>Спокойное обучение шаг за шагом</span>
+        </div>
+    </footer>
+</body>
+</html>
+{{end}}

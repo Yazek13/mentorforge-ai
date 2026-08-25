@@ -1,0 +1,20 @@
+{{define "lesson-stages"}}
+<nav class="lesson-stages" aria-label="Этапы урока" data-lesson-stages data-lesson-id="{{.Lesson.ID}}" data-practice-id="{{.Lesson.PracticeTaskID}}">
+    <a class="lesson-stage {{if eq .Stage "lecture"}}is-current{{end}}" href="/lessons/{{.Lesson.ID}}" data-stage-item="lecture">
+        <span>1</span>
+        <strong>Лекция</strong>
+    </a>
+    <a class="lesson-stage {{if eq .Stage "questions"}}is-current{{end}}" href="/lessons/{{.Lesson.ID}}/questions" data-stage-item="questions">
+        <span>2</span>
+        <strong>Вопросы</strong>
+    </a>
+    <a class="lesson-stage {{if eq .Stage "practice"}}is-current{{end}}" href="/lessons/{{.Lesson.ID}}/practice" data-stage-item="practice">
+        <span>3</span>
+        <strong>Практика</strong>
+    </a>
+    <a class="lesson-stage {{if eq .Stage "complete"}}is-current{{end}}" href="/lessons/{{.Lesson.ID}}/complete" data-stage-item="complete">
+        <span>4</span>
+        <strong>Завершение</strong>
+    </a>
+</nav>
+{{end}}

@@ -1,0 +1,135 @@
+{{define "lesson-practice"}}
+{{template "layout-start" .}}
+<div class="lesson-shell lesson-shell--practice" data-lesson-page="practice">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span>
+        <a href="/topics/{{.Topic.ID}}">{{.Topic.Title}}</a><span aria-hidden="true">/</span>
+        <a href="/lessons/{{.Lesson.ID}}">{{.Lesson.Title}}</a><span aria-hidden="true">/</span>
+        <span>Практика</span>
+    </nav>
+
+    {{template "lesson-stages" .}}
+
+    <section class="stage-lock" data-stage-lock="practice">
+        <p class="eyebrow">Этап заблокирован</p>
+        <h1>Сначала завершите предыдущие этапы</h1>
+        <p data-practice-lock-message>Нужно прочитать лекцию и зафиксировать ответы на обязательные вопросы.</p>
+        <div class="hero__actions">
+            <a class="button button--quiet" href="/lessons/{{.Lesson.ID}}">Открыть лекцию</a>
+            <a class="button button--primary" href="/lessons/{{.Lesson.ID}}/questions">Открыть вопросы</a>
+        </div>
+    </section>
+
+    <section class="practice-workflow" data-practice-workflow hidden>
+        <header class="stage-header">
+            <div class="learning-card__meta">
+                <span class="topic-chip">{{.Topic.Title}}</span>
+                <span class="level-badge">{{.Level}}</span>
+                <span class="language-badge">{{.Practice.Language}}</span>
+            </div>
+            <p class="eyebrow">Этап 3 · Практическое задание</p>
+            <h1>{{.Practice.Title}}</h1>
+        </header>
+
+        <div class="practice-layout">
+            <aside class="practice-brief">
+                <section>
+                    <h2>Условие</h2>
+                    <p>{{.Practice.Description}}</p>
+                </section>
+                <section>
+                    <h2>Требования</h2>
+                    <ul>{{range .Practice.Requirements}}<li>{{.}}</li>{{end}}</ul>
+                </section>
+                <section>
+                    <h2>Ожидаемый результат</h2>
+                    <pre><code>{{.Practice.ExpectedResult}}</code></pre>
+                </section>
+                {{if .Practice.StarterCode}}
+                <section>
+                    <h2>Стартовый материал</h2>
+                    <pre><code class="language-{{.Practice.Language}}">{{.Practice.StarterCode}}</code></pre>
+                </section>
+                {{end}}
+                {{if .Practice.Hints}}
+                <details class="hints">
+                    <summary>Показать подсказки</summary>
+                    <ul>{{range .Practice.Hints}}<li>{{.}}</li>{{end}}</ul>
+                </details>
+                {{end}}
+            </aside>
+
+            <form class="practice-form" data-practice-form data-task-id="{{.Practice.ID}}" data-lesson-id="{{.Lesson.ID}}">
+                <div class="practice-form__heading">
+                    <div>
+                        <p class="eyebrow">Только в этом браузере</p>
+                        <h2>Моё выполнение</h2>
+                    </div>
+                    <span class="local-badge">localStorage</span>
+                </div>
+
+                <label class="form-field">
+                    <span>Моё решение</span>
+                    <textarea class="code-textarea" rows="15" maxlength="40000" data-practice-field="solution" placeholder="Вставьте код или опишите решение..."></textarea>
+                </label>
+                <label class="form-field">
+                    <span>Как работает моё решение</span>
+                    <textarea rows="7" maxlength="16000" data-practice-field="explanation" placeholder="Объясните алгоритм или структуру своими словами..."></textarea>
+                </label>
+                <label class="form-field">
+                    <span>Результат запуска</span>
+                    <textarea class="terminal-textarea" rows="6" maxlength="16000" data-practice-field="execution_result" placeholder="Вставьте вывод терминала или опишите результат..."></textarea>
+                </label>
+                <p class="form-note">Вставляйте полный вывод программы, включая успешные и ошибочные сценарии.</p>
+                <label class="form-field">
+                    <span>Что было сложно</span>
+                    <textarea rows="6" maxlength="16000" data-practice-field="difficulties" placeholder="Опишите ошибки, непонятные места и вопросы наставнику..."></textarea>
+                </label>
+
+                <fieldset class="check-fieldset">
+                    <legend>Что я проверил</legend>
+                    {{if .CodeTask}}
+                    <label><input type="checkbox" data-practice-check="runs"> <span>программа запускается</span></label>
+                    {{end}}
+                    <label><input type="checkbox" data-practice-check="matches_requirements"> <span>результат соответствует условию</span></label>
+                    <label><input type="checkbox" data-practice-check="understands_code"> <span>я понимаю каждую строку или каждый шаг</span></label>
+                    {{if .CodeTask}}
+                    <label><input type="checkbox" data-practice-check="checked_errors"> <span>я проверил ошибочные входные данные</span></label>
+                    <label><input type="checkbox" data-practice-check="checked_success_and_error"> <span>Проверил успешный и ошибочный сценарии</span></label>
+                    {{end}}
+                    <label><input type="checkbox" data-practice-check="done_independently"> <span>я выполнил задание самостоятельно</span></label>
+                </fieldset>
+
+                <label class="form-field">
+                    <span>Самооценка</span>
+                    <select data-practice-field="self_assessment">
+                        <option value="">Выберите самооценку</option>
+                        <option value="not_understood">пока не понял</option>
+                        <option value="partially_understood">понял частично</option>
+                        <option value="understood">понял</option>
+                        <option value="can_explain">могу объяснить другому</option>
+                    </select>
+                </label>
+
+                <fieldset class="github-fields">
+                    <legend>GitHub — необязательно</legend>
+                    <label class="form-field"><span>RepositoryURL</span><input type="url" maxlength="500" data-practice-field="repository_url" placeholder="https://..."></label>
+                    <label class="form-field"><span>Branch</span><input type="text" maxlength="200" data-practice-field="branch" placeholder="Название ветки"></label>
+                    <label class="form-field"><span>CommitHash</span><input type="text" maxlength="200" data-practice-field="commit_hash" placeholder="Хеш commit"></label>
+                </fieldset>
+
+                <div class="practice-form__actions">
+                    <button class="button button--quiet" type="button" data-save-practice>Сохранить черновик</button>
+                    <button class="button button--primary" type="button" data-submit-practice>Завершить практику</button>
+                    <button class="button button--secondary" type="button" data-edit-practice hidden>Изменить решение</button>
+                    <button class="button button--danger" type="button" data-clear-practice>Очистить решение</button>
+                </div>
+                <p class="answer-save-status" data-practice-status role="status" aria-live="polite">Решение ещё не сохранено.</p>
+                <a class="button button--primary practice-complete-link" href="/lessons/{{.Lesson.ID}}/complete" data-complete-link hidden>Перейти к завершению урока →</a>
+            </form>
+        </div>
+    </section>
+</div>
+<script type="application/json" id="mentorforge-lesson-data">{{.RuntimeData}}</script>
+{{template "layout-end" .}}
+{{end}}

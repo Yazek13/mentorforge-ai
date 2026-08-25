@@ -1,0 +1,106 @@
+{{define "lesson"}}
+{{template "layout-start" .}}
+<div class="lesson-shell lesson-shell--lecture" data-lesson-page="lecture">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a>
+        <span aria-hidden="true">/</span>
+        <a href="/topics/{{.Topic.ID}}">{{.Topic.Title}}</a>
+        <span aria-hidden="true">/</span>
+        <span>Урок {{.LessonNumber}}</span>
+    </nav>
+
+    {{template "lesson-stages" .}}
+
+    <article class="lecture">
+        <header class="lecture-hero">
+            <div class="learning-card__meta">
+                <span class="topic-chip">{{.Topic.Title}}</span>
+                <span class="level-badge">{{.Level}}</span>
+                <span class="question-counter">Урок {{.LessonNumber}} из {{.TopicLessonCount}}</span>
+            </div>
+            <p class="eyebrow">Полноценная лекция</p>
+            <h1>{{.Lesson.Title}}</h1>
+            <div class="lesson-goal">
+                <strong>Цель урока</strong>
+                <p>{{.Lesson.Goal}}</p>
+            </div>
+            <p class="lecture-introduction">{{.Lesson.Introduction}}</p>
+        </header>
+
+        <div class="lecture-content">
+            {{range .Lesson.TheorySections}}
+            <section class="theory-section">
+                <h2>{{.Title}}</h2>
+                <p>{{.Content}}</p>
+            </section>
+            {{end}}
+
+            {{if .Lesson.Terms}}
+            <section class="lecture-block">
+                <p class="eyebrow">Словарь урока</p>
+                <h2>Новые термины</h2>
+                <div class="term-grid">
+                    {{range .Lesson.Terms}}
+                    <article class="term-card">
+                        <h3>{{.Name}}</h3>
+                        <p>{{.Explanation}}</p>
+                    </article>
+                    {{end}}
+                </div>
+            </section>
+            {{end}}
+
+            {{if .Lesson.CodeExamples}}
+            <section class="lecture-block">
+                <p class="eyebrow">Разбор кода</p>
+                <h2>Примеры</h2>
+                <div class="code-example-list">
+                    {{range .Lesson.CodeExamples}}
+                    <article class="code-example">
+                        <h3>{{.Title}}</h3>
+                        <pre><code class="language-{{.Language}}">{{.Code}}</code></pre>
+                        <p>{{.Explanation}}</p>
+                        {{if .ExpectedOutput}}
+                        <div class="code-example__output">
+                            <strong>Ожидаемый вывод</strong>
+                            <pre><code class="language-text">{{.ExpectedOutput}}</code></pre>
+                        </div>
+                        {{end}}
+                    </article>
+                    {{end}}
+                </div>
+            </section>
+            {{end}}
+
+            <div class="lecture-columns">
+                <section class="lecture-list-card lecture-list-card--usage">
+                    <h2>Где применяется</h2>
+                    <ul>{{range .Lesson.RealUsage}}<li>{{.}}</li>{{end}}</ul>
+                </section>
+                <section class="lecture-list-card lecture-list-card--mistakes">
+                    <h2>Типичные ошибки новичков</h2>
+                    <ul>{{range .Lesson.CommonMistakes}}<li>{{.}}</li>{{end}}</ul>
+                </section>
+            </div>
+
+            <section class="key-points">
+                <p class="eyebrow">Запомните</p>
+                <h2>Основные мысли</h2>
+                <ul>{{range .Lesson.KeyPoints}}<li>{{.}}</li>{{end}}</ul>
+            </section>
+
+            <section class="lesson-summary">
+                <p class="eyebrow">Краткий итог</p>
+                <p>{{.Lesson.Summary}}</p>
+            </section>
+        </div>
+    </article>
+
+    <div class="lesson-primary-action">
+        <button class="button button--primary button--large" type="button" data-mark-lesson-read data-next-url="/lessons/{{.Lesson.ID}}/questions">Я прочитал лекцию — перейти к вопросам</button>
+        <p class="stage-action-status" data-lesson-read-status role="status" aria-live="polite"></p>
+    </div>
+</div>
+<script type="application/json" id="mentorforge-lesson-data">{{.RuntimeData}}</script>
+{{template "layout-end" .}}
+{{end}}

@@ -22,64 +22,151 @@ topics:
     title: Interview Basics
     description: Как уверенно отвечать на технические вопросы на собеседовании.
 
+lessons:
+  - id: 1
+    topic_id: 1
+    slug: go-lesson-01
+    title: Что такое программа и язык Go
+    question_ids: [1, 2, 3, 4, 5]
+    practice_task_id: 1
+  - id: 2
+    topic_id: 1
+    slug: go-lesson-02
+    title: Базовые элементы кода Go
+    question_ids: [6, 7, 8, 9, 10]
+    practice_task_id: 2
+  - id: 7
+    topic_id: 1
+    slug: go-lesson-03
+    title: Условия, циклы и коллекции Go
+    question_ids: [31, 32, 33, 34, 35, 36, 37, 38, 39]
+    practice_task_id: 7
+  - id: 3
+    topic_id: 2
+    slug: python-lesson-01
+    title: Python для учебных скриптов и AI/ML
+    question_ids: [11, 12, 13, 14, 15]
+    practice_task_id: 3
+  - id: 4
+    topic_id: 3
+    slug: ai-ml-lesson-01
+    title: Искусственный интеллект, машинное обучение и данные
+    question_ids: [16, 17, 18, 19, 20]
+    practice_task_id: 4
+  - id: 5
+    topic_id: 3
+    slug: ai-ml-lesson-02
+    title: Обучение, inference и работа с текстом
+    question_ids: [21, 22, 23, 24, 25]
+    practice_task_id: 5
+  - id: 6
+    topic_id: 4
+    slug: interview-lesson-01
+    title: Структура технического ответа
+    question_ids: [26, 27, 28, 29, 30]
+    practice_task_id: 6
+
+practice_tasks:
+  - id: 1
+    lesson_id: 1
+    title: Создать программу с учебным представлением
+    description: Создайте Go-программу, которая выводит нейтральное имя или заполнитель, язык Go и учебную цель.
+    language: go
+  - id: 2
+    lesson_id: 2
+    title: Описать учебную карточку
+    description: Создайте struct для учебной карточки, функцию форматирования и обработку некорректного входа.
+    language: go
+  - id: 7
+    lesson_id: 7
+    title: Каталог учебных карточек
+    description: Создайте консольную Go-программу для хранения, фильтрации и безопасного поиска нейтральных учебных карточек.
+    language: go
+  - id: 3
+    lesson_id: 3
+    title: Создать учебный Python-скрипт
+    description: Выведите нумерованный список нейтральных учебных тем.
+    language: python
+  - id: 4
+    lesson_id: 4
+    title: Спроектировать учебный датасет
+    description: Опишите нейтральный датасет для классификации учебных заметок.
+    language: text
+  - id: 5
+    lesson_id: 5
+    title: Составить схему простого RAG-процесса
+    description: Опишите поиск учебного материала и подготовку ответа по найденному контексту.
+    language: text
+  - id: 6
+    lesson_id: 6
+    title: Подготовить структурированный технический ответ
+    description: Подготовьте ответ по структуре определение, механизм, применение, плюсы и ограничения.
+    language: text
+
 questions:
   - id: 1
     topic_id: 1
+    lesson_id: 1
     level: beginner
-    question: Что такое Go?
-    simple_answer: Go — это простой и быстрый язык программирования для backend, инструментов и сервисов.
-    interview_answer: Go — компилируемый язык с акцентом на простоту, скорость сборки и конкурентность.
-    real_usage: Используется для API, микросервисов, CLI и инфраструктурных сервисов.
+    question: Что такое программа?
+    simple_answer: Программа — это набор инструкций, которые компьютер выполняет для решения задачи.
+    interview_answer: Программа — это формально записанная последовательность инструкций, которую инструменты языка подготавливают к выполнению компьютером.
+    real_usage: Программы обрабатывают запросы, преобразуют данные, выполняют расчёты и автоматизируют повторяющиеся задачи.
     follow_up_questions:
-      - Чем Go отличается от Python?
-      - Почему Go удобен для backend?
-    practice_task: Напишите короткую программу, которая выводит строку приветствия.
+      - Чем программа отличается от исходного кода?
+      - Какие задачи может выполнять программа?
+    practice_task: Назовите три нейтральные задачи, которые можно поручить программе.
   - id: 2
     topic_id: 1
+    lesson_id: 1
     level: beginner
-    question: Что такое package main?
-    simple_answer: Это пакет, из которого Go запускает приложение как исполняемую программу.
-    interview_answer: package main обозначает точку входа для исполняемого Go-приложения.
-    real_usage: Используется в сервисах, CLI и любых приложениях, которые нужно запускать как отдельный процесс.
+    question: Что такое язык программирования?
+    simple_answer: Это набор правил, с помощью которых человек записывает инструкции для компьютера.
+    interview_answer: Язык программирования определяет синтаксис и смысл конструкций исходного кода.
+    real_usage: Языки программирования используют для создания backend-сервисов, инструментов и систем обработки данных.
     follow_up_questions:
-      - Чем package main отличается от обычного пакета?
-      - Что произойдёт без package main?
-    practice_task: Создайте файл main.go с пакетом main.
+      - Зачем языку программирования правила синтаксиса?
+      - Можно ли решить одну задачу на разных языках?
+    practice_task: Объясните понятие языка программирования двумя простыми предложениями.
   - id: 3
     topic_id: 1
+    lesson_id: 1
     level: beginner
-    question: Зачем нужна функция main?
-    simple_answer: Это стартовая функция программы.
-    interview_answer: Функция main — это точка входа. В неё передаётся управление после запуска программы.
-    real_usage: Это основа любого исполняемого Go-сервиса и утилиты.
+    question: Что такое Go?
+    simple_answer: Go — это компилируемый язык программирования с простым синтаксисом.
+    interview_answer: Go — компилируемый язык со статической типизацией и акцентом на понятный код и быструю сборку.
+    real_usage: Go применяют для HTTP API, backend-сервисов, консольных инструментов и обработки данных.
     follow_up_questions:
-      - Может ли быть несколько функций main?
-      - Что делает runtime при запуске main?
-    practice_task: Сделайте main и выведите одну строку в консоль.
+      - Почему Go называют компилируемым языком?
+      - Какие программы удобно создавать на Go?
+    practice_task: Создайте файл main.go и запишите каркас исполняемой Go-программы.
   - id: 4
     topic_id: 1
+    lesson_id: 1
     level: beginner
-    question: Что такое go.mod?
-    simple_answer: Это файл, где описан модуль и его зависимости.
-    interview_answer: go.mod хранит имя модуля, версию Go и список зависимостей.
-    real_usage: Используется во всех современных Go-проектах для управления зависимостями.
+    question: Что означает компиляция?
+    simple_answer: Компиляция превращает исходный код в форму, которую компьютер может выполнить.
+    interview_answer: Компиляция проверяет исходный код и преобразует корректную программу в машинно исполняемую форму.
+    real_usage: Компиляция используется перед запуском и поставкой Go-программ и помогает обнаружить часть ошибок заранее.
     follow_up_questions:
-      - Что такое модуль в Go?
-      - Как go.mod связан с go.sum?
-    practice_task: Создайте новый модуль командой go mod init.
+      - Что компилятор может проверить до запуска?
+      - Чем go run отличается от go build?
+    practice_task: Запустите нейтральную учебную программу через go run и опишите результат.
   - id: 5
     topic_id: 1
+    lesson_id: 1
     level: beginner
-    question: Что такое переменная?
-    simple_answer: Это именованное место для хранения значения.
-    interview_answer: Переменная связывает имя и значение и позволяет хранить данные в программе.
-    real_usage: В backend-коде переменные хранят запросы, ответы и промежуточные результаты.
+    question: Для чего нужна функция main?
+    simple_answer: С функции main начинается выполнение исполняемой Go-программы.
+    interview_answer: Функция main в пакете main является точкой входа и вызывает остальные части программы в нужном порядке.
+    real_usage: main запускает настройку и основную логику backend-сервиса или консольного инструмента.
     follow_up_questions:
-      - Чем переменная отличается от константы?
-      - Когда значение переменной меняется?
-    practice_task: Объявите числовую переменную с количеством учебных вопросов.
+      - В каком пакете должна находиться функция main?
+      - Что произойдёт после завершения main?
+    practice_task: Напишите функцию main с одним вызовом fmt.Println.
   - id: 6
     topic_id: 1
+    lesson_id: 2
     level: beginner
     question: Чем var отличается от :=?
     simple_answer: var — явное объявление, := — короткая запись с выводом типа.
@@ -91,6 +178,7 @@ questions:
     practice_task: Объявите одну переменную через var и одну через :=.
   - id: 7
     topic_id: 1
+    lesson_id: 2
     level: beginner
     question: Что такое тип данных?
     simple_answer: Это описание того, какие значения можно хранить в переменной.
@@ -102,6 +190,7 @@ questions:
     practice_task: Создайте переменные разных типов и выведите их значения.
   - id: 8
     topic_id: 1
+    lesson_id: 2
     level: beginner
     question: Что такое struct?
     simple_answer: Это составной тип данных для хранения связанных полей.
@@ -113,6 +202,7 @@ questions:
     practice_task: Опишите struct для учебной темы с тремя полями.
   - id: 9
     topic_id: 1
+    lesson_id: 2
     level: beginner
     question: Что такое function?
     simple_answer: Это блок кода, который выполняет одну задачу.
@@ -124,6 +214,7 @@ questions:
     practice_task: Напишите функцию, которая складывает два числа.
   - id: 10
     topic_id: 1
+    lesson_id: 2
     level: beginner
     question: Что такое error?
     simple_answer: Это значение, которое показывает, что что-то пошло не так.
@@ -136,6 +227,7 @@ questions:
 
   - id: 11
     topic_id: 2
+    lesson_id: 3
     level: beginner
     question: "Что такое Python?"
     simple_answer: "Python — это простой язык программирования для автоматизации, анализа данных и AI/ML."
@@ -148,6 +240,7 @@ questions:
 
   - id: 12
     topic_id: 2
+    lesson_id: 3
     level: beginner
     question: "Где Python используется в AI/ML?"
     simple_answer: "Python используют для подготовки данных, обучения моделей и запуска экспериментов."
@@ -160,6 +253,7 @@ questions:
 
   - id: 13
     topic_id: 2
+    lesson_id: 3
     level: beginner
     question: "Что такое script?"
     simple_answer: "Это короткая программа для автоматизации задачи."
@@ -172,6 +266,7 @@ questions:
 
   - id: 14
     topic_id: 2
+    lesson_id: 3
     level: beginner
     question: "Что такое virtual environment?"
     simple_answer: "Это изолированное окружение для зависимостей проекта."
@@ -184,6 +279,7 @@ questions:
 
   - id: 15
     topic_id: 2
+    lesson_id: 3
     level: beginner
     question: "Что такое pip?"
     simple_answer: "Это менеджер пакетов Python."
@@ -196,6 +292,7 @@ questions:
 
   - id: 16
     topic_id: 3
+    lesson_id: 4
     level: beginner
     question: "Что такое искусственный интеллект?"
     simple_answer: "Это системы, которые выполняют задачи, связанные с распознаванием, прогнозом и обработкой информации."
@@ -208,6 +305,7 @@ questions:
 
   - id: 17
     topic_id: 3
+    lesson_id: 4
     level: beginner
     question: "Что такое машинное обучение?"
     simple_answer: "Это способ учить модель на данных, чтобы она делала прогнозы или классифицировала объекты."
@@ -220,6 +318,7 @@ questions:
 
   - id: 18
     topic_id: 3
+    lesson_id: 4
     level: beginner
     question: "Чем AI отличается от ML?"
     simple_answer: "AI — более широкое понятие, а ML — его часть."
@@ -232,6 +331,7 @@ questions:
 
   - id: 19
     topic_id: 3
+    lesson_id: 4
     level: beginner
     question: "Что такое модель?"
     simple_answer: "Это математическое представление, которое делает прогнозы по данным."
@@ -244,6 +344,7 @@ questions:
 
   - id: 20
     topic_id: 3
+    lesson_id: 4
     level: beginner
     question: "Что такое датасет?"
     simple_answer: "Это набор данных для обучения, проверки или тестирования модели."
@@ -256,6 +357,7 @@ questions:
 
   - id: 21
     topic_id: 3
+    lesson_id: 5
     level: beginner
     question: "Что такое обучение модели?"
     simple_answer: "Это процесс настройки модели на данных."
@@ -268,6 +370,7 @@ questions:
 
   - id: 22
     topic_id: 3
+    lesson_id: 5
     level: beginner
     question: "Что такое inference?"
     simple_answer: "Это использование обученной модели для получения ответа на новых данных."
@@ -280,6 +383,7 @@ questions:
 
   - id: 23
     topic_id: 3
+    lesson_id: 5
     level: beginner
     question: "Что такое prompt?"
     simple_answer: "Это текстовая инструкция для модели."
@@ -292,6 +396,7 @@ questions:
 
   - id: 24
     topic_id: 3
+    lesson_id: 5
     level: beginner
     question: "Что такое embedding?"
     simple_answer: "Это числовое представление текста, кода или другого объекта."
@@ -304,6 +409,7 @@ questions:
 
   - id: 25
     topic_id: 3
+    lesson_id: 5
     level: beginner
     question: "Что такое RAG?"
     simple_answer: "Это подход, где модель сначала ищет нужные данные, а потом формирует ответ."
@@ -316,6 +422,7 @@ questions:
 
   - id: 26
     topic_id: 4
+    lesson_id: 6
     level: beginner
     question: "Как отвечать на технический вопрос?"
     simple_answer: "Сначала нужно кратко дать определение, а затем пояснить его на примере."
@@ -328,6 +435,7 @@ questions:
 
   - id: 27
     topic_id: 4
+    lesson_id: 6
     level: beginner
     question: "Что делать, если не знаешь ответ?"
     simple_answer: "Спокойно сказать, что точный ответ неизвестен, и объяснить, как начать разбираться."
@@ -340,6 +448,7 @@ questions:
 
   - id: 28
     topic_id: 4
+    lesson_id: 6
     level: beginner
     question: "Как объяснять решение простыми словами?"
     simple_answer: "Нужно убрать лишние детали и описать цель, шаги и результат."
@@ -352,6 +461,7 @@ questions:
 
   - id: 29
     topic_id: 4
+    lesson_id: 6
     level: beginner
     question: "Что такое компромисс в архитектуре?"
     simple_answer: "Это осознанный выбор между плюсами и минусами разных решений."
@@ -364,6 +474,7 @@ questions:
 
   - id: 30
     topic_id: 4
+    lesson_id: 6
     level: beginner
     question: "Почему важно говорить о плюсах и минусах решения?"
     simple_answer: "Потому что это показывает понимание решения и его ограничений."
@@ -373,3 +484,120 @@ questions:
       - "Почему важно видеть ограничения решения?"
       - "Как плюсы и минусы помогают принимать решения?"
     practice_task: "Опишите нейтральное техническое решение через два плюса и два минуса."
+
+  - id: 31
+    topic_id: 1
+    lesson_id: 7
+    level: beginner
+    question: "Что такое условие и какой тип должен иметь его результат?"
+    simple_answer: "Условие — это выражение типа bool со значением true или false."
+    interview_answer: "Условие управляет выполнением ветки кода и в Go обязательно имеет тип bool."
+    real_usage: "Условия проверяют допустимые значения входных данных."
+    follow_up_questions:
+      - "Какие значения есть у bool?"
+      - "Чем && отличается от ||?"
+    practice_task: "Запишите простую bool-проверку допустимого уровня."
+
+  - id: 32
+    topic_id: 1
+    lesson_id: 7
+    level: beginner
+    question: "Как работают if, else if и else?"
+    simple_answer: "if проверяет первое условие, else if — дополнительные, а else выполняется, если ни одно не подошло."
+    interview_answer: "Ветки проверяются сверху вниз, и выполняется блок первого истинного условия."
+    real_usage: "Ветвление выбирает способ обработки разных вариантов входных данных."
+    follow_up_questions:
+      - "Может ли быть несколько else if?"
+      - "Когда else не нужен?"
+    practice_task: "Опишите три ветки для разных диапазонов уровня."
+
+  - id: 33
+    topic_id: 1
+    lesson_id: 7
+    level: beginner
+    question: "Почему в Go нет отдельного ключевого слова while?"
+    simple_answer: "Потому что for поддерживает и цикл со счётчиком, и цикл только с условием."
+    interview_answer: "Форма for condition выполняет роль while, а for без условия создаёт бесконечный цикл."
+    real_usage: "Цикл с условием используют, когда количество повторений заранее неизвестно."
+    follow_up_questions:
+      - "Как записать бесконечный цикл?"
+      - "Чем break отличается от continue?"
+    practice_task: "Запишите цикл for только с условием."
+
+  - id: 34
+    topic_id: 1
+    lesson_id: 7
+    level: beginner
+    question: "Чем массив отличается от slice?"
+    simple_answer: "Массив имеет фиксированную длину в типе, а slice удобен для последовательности изменяемой длины."
+    interview_answer: "Тип массива включает длину, а slice представляет последовательность элементов одного типа и чаще используется в прикладном коде."
+    real_usage: "Slice хранит списки результатов и учебных карточек."
+    follow_up_questions:
+      - "Что возвращает len для slice?"
+      - "Почему [3]int и [4]int — разные типы?"
+    practice_task: "Создайте slice из трёх нейтральных названий."
+
+  - id: 35
+    topic_id: 1
+    lesson_id: 7
+    level: beginner
+    question: "Зачем результат append обычно присваивают обратно в переменную?"
+    simple_answer: "append возвращает обновлённый slice, поэтому результат нужно сохранить."
+    interview_answer: "append может вернуть другое значение slice, поэтому обычно пишут cards = append(cards, newCard)."
+    real_usage: "append накапливает результаты фильтрации и формирует новые списки."
+    follow_up_questions:
+      - "Можно ли добавить несколько элементов?"
+      - "Как меняется len после append?"
+    practice_task: "Добавьте строку в slice и сохраните результат append."
+
+  - id: 36
+    topic_id: 1
+    lesson_id: 7
+    level: beginner
+    question: "Какие значения возвращает range при обходе slice?"
+    simple_answer: "range возвращает индекс и копию значения элемента."
+    interview_answer: "В for index, value := range items первое значение — индекс, второе — копия элемента; ненужное заменяют на _."
+    real_usage: "range последовательно обходит списки результатов и карточек."
+    follow_up_questions:
+      - "Как игнорировать индекс?"
+      - "Почему для изменения элемента часто используют индекс?"
+    practice_task: "Покажите три формы range для slice."
+
+  - id: 37
+    topic_id: 1
+    lesson_id: 7
+    level: beginner
+    question: "Что такое map и чем ключ отличается от значения?"
+    simple_answer: "Map хранит пары: ключ используется для поиска, а значение содержит данные."
+    interview_answer: "Map задаёт единый тип ключей и значений; уникальный ключ определяет связанную запись."
+    real_usage: "Map используют для быстрого поиска, конфигурации, кэша и группировки."
+    follow_up_questions:
+      - "Как создать map через make?"
+      - "Как удалить элемент map?"
+    practice_task: "Опишите map названий карточек и уровней."
+
+  - id: 38
+    topic_id: 1
+    lesson_id: 7
+    level: beginner
+    question: "Как проверить, существует ли ключ в map?"
+    simple_answer: "Нужно получить value и ok, затем проверить ok."
+    interview_answer: "ok равно true для существующего ключа и false для отсутствующего; одно нулевое значение не заменяет эту проверку."
+    real_usage: "value, ok безопасно обрабатывает необязательные настройки и результаты поиска."
+    follow_up_questions:
+      - "Что содержит value при отсутствующем ключе?"
+      - "Почему нулевого значения недостаточно?"
+    practice_task: "Запишите безопасный поиск в map с проверкой ok."
+
+  - id: 39
+    topic_id: 1
+    lesson_id: 7
+    level: beginner
+    question: "Гарантирован ли порядок обхода map?"
+    simple_answer: "Нет, порядок обхода map через range не гарантируется."
+    interview_answer: "Нельзя полагаться на порядок добавления; для стабильности ключи собирают в slice и сортируют."
+    real_usage: "Стабильный порядок важен для предсказуемых отчётов, API и тестов."
+    follow_up_questions:
+      - "Что делать, если нужен стабильный порядок?"
+      - "Подходит ли map для упорядоченного списка?"
+    practice_task: "Объясните, почему вывод map нельзя сравнивать по порядку без дополнительной обработки."

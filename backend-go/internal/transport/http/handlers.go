@@ -3,36 +3,58 @@ package httptransport
 import (
 	"encoding/json"
 	"errors"
+	"html/template"
+	"io/fs"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	"mentorforge-ai/backend-go/internal/service/learning"
+	webassets "mentorforge-ai/backend-go/web"
 )
 
 // Handler объединяет HTTP-роуты и сервис.
 type Handler struct {
-	service *learning.Service
+	service     *learning.Service
+	templates   *template.Template
+	staticFiles http.Handler
 }
 
 // NewHandler создаёт HTTP-обработчик с готовым сервисом.
 func NewHandler() *Handler {
 	return &Handler{
-		service: learning.NewService(),
+		service:     learning.NewService(),
+		templates:   template.Must(template.ParseFS(webassets.Files, "templates/*.html")),
+		staticFiles: newStaticFileHandler(),
 	}
 }
 
 // Routes возвращает http.Handler с зарегистрированными endpoint.
 func (h *Handler) Routes() http.Handler {
 	mux := http.NewServeMux()
+	mux.Handle("/static/", http.StripPrefix("/static/", h.staticFiles))
 	mux.HandleFunc("/health", h.handleHealth)
 	mux.HandleFunc("/topics", h.handleTopics)
+	mux.HandleFunc("/topics/", h.handleTopicPage)
 	mux.HandleFunc("/questions", h.handleQuestions)
 	mux.HandleFunc("/questions/", h.handleQuestionByID)
 	mux.HandleFunc("/reviews", h.handleReviews)
-	mux.HandleFunc("/", h.handleNotFound)
+	mux.HandleFunc("/lessons/", h.handleLessonRoute)
+	mux.HandleFunc("/learn", h.handleLearnPage)
+	mux.HandleFunc("/learn/", h.handleLearnQuestionPage)
+	mux.HandleFunc("/", h.handleHomePage)
 	return mux
+}
+
+func newStaticFileHandler() http.Handler {
+	staticFiles, err := fs.Sub(webassets.Files, "static")
+	if err != nil {
+		// Ошибка означает, что статические файлы не попали в сборку приложения.
+		panic("static files are not embedded")
+	}
+
+	return http.FileServer(http.FS(staticFiles))
 }
 
 func (h *Handler) handleNotFound(w http.ResponseWriter, _ *http.Request) {

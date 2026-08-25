@@ -1,0 +1,102 @@
+{{define "lesson-questions"}}
+{{template "layout-start" .}}
+<div class="lesson-shell lesson-shell--questions" data-lesson-page="questions">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span>
+        <a href="/topics/{{.Topic.ID}}">{{.Topic.Title}}</a><span aria-hidden="true">/</span>
+        <a href="/lessons/{{.Lesson.ID}}">{{.Lesson.Title}}</a><span aria-hidden="true">/</span>
+        <span>Вопросы</span>
+    </nav>
+
+    {{template "lesson-stages" .}}
+
+    <section class="stage-lock" data-stage-lock="questions">
+        <p class="eyebrow">Этап заблокирован</p>
+        <h1>Сначала прочитайте лекцию</h1>
+        <p>Отметьте чтение на странице лекции, чтобы открыть контрольные вопросы.</p>
+        <a class="button button--primary" href="/lessons/{{.Lesson.ID}}">Вернуться к лекции</a>
+    </section>
+
+    <section class="questions-workflow" data-questions-workflow hidden>
+        <header class="stage-header">
+            <div class="learning-card__meta">
+                <span class="topic-chip">{{.Topic.Title}}</span>
+                <span class="level-badge">{{.Level}}</span>
+                <span class="question-counter">{{.QuestionCount}} вопросов</span>
+            </div>
+            <p class="eyebrow">Этап 2 · Самостоятельный ответ</p>
+            <h1>Контрольные вопросы</h1>
+            <p>Сначала сформулируйте ответ своими словами. Эталон откроется только после фиксации ответа.</p>
+        </header>
+
+        {{if .Questions}}
+        <div class="lesson-question-list">
+            {{range .Questions}}
+            <article class="lesson-question-card" data-question-editor data-question-id="{{.Question.ID}}">
+                <div class="lesson-question-card__heading">
+                    <div>
+                        <p class="eyebrow">Вопрос {{.Number}} из {{$.QuestionCount}}</p>
+                        <h2>{{.Question.Question}}</h2>
+                    </div>
+                    <span class="level-badge">{{$.Level}}</span>
+                </div>
+
+                <div class="user-answer user-answer--embedded">
+                    <label for="question-answer-{{.Question.ID}}">Мой ответ</label>
+                    <textarea id="question-answer-{{.Question.ID}}" class="user-answer__textarea" rows="7" maxlength="12000" placeholder="Ответьте своими словами..." data-answer-text></textarea>
+                    <div class="user-answer__actions">
+                        <button class="button button--quiet" type="button" data-save-answer>Сохранить черновик</button>
+                        <button class="button button--secondary" type="button" data-submit-answer>Зафиксировать ответ</button>
+                        <button class="button button--quiet" type="button" data-edit-answer hidden>Изменить ответ</button>
+                    </div>
+                    <p class="answer-save-status" data-answer-status role="status" aria-live="polite">Ответ ещё не сохранён.</p>
+                </div>
+
+                <div class="answer-comparison" data-answer-comparison hidden>
+                    <p class="eyebrow">Сравнение после фиксации</p>
+                    <section class="answer-card answer-card--own">
+                        <p class="answer-card__label">Мой ответ</p>
+                        <div class="answer-card__text" data-own-answer-display></div>
+                    </section>
+                    <section class="answer-card answer-card--simple">
+                        <p class="answer-card__label">Краткий эталон</p>
+                        <div class="answer-card__text">{{.Question.SimpleAnswer}}</div>
+                    </section>
+                    <section class="answer-card answer-card--interview">
+                        <p class="answer-card__label">Ответ для собеседования</p>
+                        <div class="answer-card__text">{{.Question.InterviewAnswer}}</div>
+                    </section>
+                    <section class="answer-card answer-card--required">
+                        <p class="answer-card__label">Что обязательно стоило упомянуть</p>
+                        <ul class="follow-up-list">{{range .Question.RequiredPoints}}<li>{{.}}</li>{{end}}</ul>
+                    </section>
+                    <section class="answer-card answer-card--usage">
+                        <p class="answer-card__label">Где применяется</p>
+                        <div class="answer-card__text">{{.Question.RealUsage}}</div>
+                    </section>
+                    <section class="answer-card answer-card--follow-up">
+                        <p class="answer-card__label">Дополнительные вопросы</p>
+                        <ol class="follow-up-list">{{range .Question.FollowUpQuestions}}<li>{{.}}</li>{{end}}</ol>
+                    </section>
+                </div>
+            </article>
+            {{end}}
+        </div>
+
+        <section class="stage-finish-card">
+            <h2>Все ответы зафиксированы?</h2>
+            <p data-question-progress>Зафиксировано 0 из {{.QuestionCount}}.</p>
+            <button class="button button--primary" type="button" disabled data-practice-disabled>Сначала зафиксируйте все ответы</button>
+            <a class="button button--primary" href="/lessons/{{.Lesson.ID}}/practice" data-practice-link hidden>Перейти к практике →</a>
+        </section>
+        {{else}}
+        <div class="empty-state">
+            <h2>Учебные вопросы пока не добавлены</h2>
+            <p>Практика будет доступна после добавления контрольных вопросов.</p>
+        </div>
+        {{end}}
+    </section>
+</div>
+<script type="application/json" id="mentorforge-lesson-data">{{.RuntimeData}}</script>
+{{template "layout-end" .}}
+{{end}}

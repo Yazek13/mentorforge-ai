@@ -1,0 +1,66 @@
+{{define "index"}}
+{{template "layout-start" .}}
+<section class="hero">
+    <div class="hero__content">
+        <p class="eyebrow">Подготовка к техническим собеседованиям</p>
+        <h1>Учитесь последовательно.<br><span>От лекции к собственной практике.</span></h1>
+        <p class="hero__description">
+            MentorForge AI помогает изучать backend- и AI/ML-темы через лекции,
+            самостоятельные ответы, сравнение с эталоном и отдельные практические задания.
+        </p>
+        <div class="hero__actions">
+            <a class="button button--primary" href="/learn">Продолжить обучение</a>
+            <button class="button button--quiet" type="button" data-export-results>Скачать все результаты</button>
+        </div>
+        <p class="export-status" data-export-status role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="stats" aria-label="Содержимое учебной платформы">
+        <div class="stat-card">
+            <span class="stat-card__value">{{.TopicCount}}</span>
+            <span class="stat-card__label">темы в программе</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-card__value">{{.LessonCount}}</span>
+            <span class="stat-card__label">уроков по этапам</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-card__value">{{.QuestionCount}}</span>
+            <span class="stat-card__label">контрольных вопросов</span>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="topics">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Учебный блок Foundation</p>
+            <h2>Доступные темы</h2>
+        </div>
+        <p>Каждый урок начинается с лекции, продолжается вопросами и завершается практикой.</p>
+    </div>
+
+    {{if .Topics}}
+    <div class="topic-grid">
+        {{range .Topics}}
+        <article class="topic-card">
+            <div class="topic-card__topline">
+                <span class="topic-card__number">Тема {{.ID}}</span>
+                <span class="count-badge">{{.LessonCount}} уроков · {{.QuestionCount}} вопросов</span>
+            </div>
+            <h3>{{.Title}}</h3>
+            <p>{{.Description}}</p>
+            <a class="button button--secondary" href="/topics/{{.ID}}">Открыть тему</a>
+        </article>
+        {{end}}
+    </div>
+    {{else}}
+    <div class="empty-state">
+        <h2>Учебные темы пока не добавлены</h2>
+        <p>Когда появится первый материал, он будет доступен на этой странице.</p>
+    </div>
+    {{end}}
+</section>
+<script type="application/json" id="mentorforge-export-data">{{.ExportData}}</script>
+{{template "layout-end" .}}
+{{end}}

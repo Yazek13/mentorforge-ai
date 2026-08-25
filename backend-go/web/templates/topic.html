@@ -1,0 +1,70 @@
+{{define "topic"}}
+{{template "layout-start" .}}
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="/">Главная</a>
+    <span aria-hidden="true">/</span>
+    <span>{{.Topic.Title}}</span>
+</nav>
+
+<section class="topic-header">
+    <div>
+        <p class="eyebrow">Учебная тема</p>
+        <h1>{{.Topic.Title}}</h1>
+        <p class="topic-header__description">{{.Topic.Description}}</p>
+    </div>
+    <div class="topic-header__aside">
+        <span class="count-badge count-badge--large">{{.LessonCount}} уроков · {{.QuestionCount}} вопросов</span>
+        <div class="topic-header__actions">
+            {{if .HasLessons}}
+            <a class="button button--primary" href="/lessons/{{.FirstLessonID}}">Начать тему</a>
+            {{end}}
+            <button class="button button--quiet" type="button" data-export-results>Скачать результаты темы</button>
+        </div>
+        <p class="export-status" data-export-status role="status" aria-live="polite"></p>
+    </div>
+</section>
+
+<section class="section section--compact">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Учебный маршрут</p>
+            <h2>Уроки темы</h2>
+        </div>
+        <p>В каждом уроке сначала прочитайте лекцию, затем ответьте на вопросы и выполните практику.</p>
+    </div>
+
+    {{if .HasLessons}}
+    <div class="lesson-list">
+        {{range .Lessons}}
+        <article class="lesson-summary-card">
+            <div class="lesson-summary-card__header">
+                <div>
+                    <p class="eyebrow">Урок {{.Number}}</p>
+                    <h3>{{.Title}}</h3>
+                </div>
+                <span class="level-badge">{{.Level}}</span>
+            </div>
+            <p class="lesson-summary-card__meta">{{.QuestionCount}} контрольных вопросов · отдельная практика</p>
+            {{if .Questions}}
+            <ol class="lesson-question-preview">
+                {{range .Questions}}
+                <li><span>{{.Number}}.</span> {{.Question}}</li>
+                {{end}}
+            </ol>
+            {{end}}
+            <a class="button button--secondary" href="/lessons/{{.ID}}">Открыть лекцию</a>
+        </article>
+        {{end}}
+    </div>
+    {{else}}
+    <div class="empty-state">
+        <h2>В этой теме пока нет уроков</h2>
+        <p>Учебные материалы будут добавлены позднее.</p>
+    </div>
+    {{end}}
+
+    <a class="text-link" href="/">← Вернуться на главную</a>
+</section>
+<script type="application/json" id="mentorforge-export-data">{{.ExportData}}</script>
+{{template "layout-end" .}}
+{{end}}

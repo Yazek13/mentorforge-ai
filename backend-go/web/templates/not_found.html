@@ -1,0 +1,10 @@
+{{define "not_found"}}
+{{template "layout-start" .}}
+<section class="error-page">
+    <p class="error-page__code">Ошибка {{.Status}}</p>
+    <h1>{{.Title}}</h1>
+    <p>{{.Message}}</p>
+    <a class="button button--primary" href="{{.BackURL}}">{{.BackLabel}}</a>
+</section>
+{{template "layout-end" .}}
+{{end}}

@@ -9,18 +9,22 @@ import (
 
 // Storage хранит данные в памяти.
 type Storage struct {
-	mu        sync.RWMutex
-	topics    map[int]domain.Topic
-	questions map[int]domain.Question
-	reviews   map[int]domain.Review
+	mu            sync.RWMutex
+	topics        map[int]domain.Topic
+	lessons       map[int]domain.Lesson
+	questions     map[int]domain.Question
+	practiceTasks map[int]domain.PracticeTask
+	reviews       map[int]domain.Review
 }
 
 // NewStorage создаёт in-memory storage и копирует стартовые данные.
-func NewStorage(topics []domain.Topic, questions []domain.Question) *Storage {
+func NewStorage(topics []domain.Topic, lessons []domain.Lesson, questions []domain.Question, practiceTasks []domain.PracticeTask) *Storage {
 	s := &Storage{
-		topics:    make(map[int]domain.Topic, len(topics)),
-		questions: make(map[int]domain.Question, len(questions)),
-		reviews:   make(map[int]domain.Review),
+		topics:        make(map[int]domain.Topic, len(topics)),
+		lessons:       make(map[int]domain.Lesson, len(lessons)),
+		questions:     make(map[int]domain.Question, len(questions)),
+		practiceTasks: make(map[int]domain.PracticeTask, len(practiceTasks)),
+		reviews:       make(map[int]domain.Review),
 	}
 
 	for _, topic := range topics {
@@ -31,7 +35,41 @@ func NewStorage(topics []domain.Topic, questions []domain.Question) *Storage {
 		s.questions[question.ID] = question
 	}
 
+	for _, lesson := range lessons {
+		s.lessons[lesson.ID] = lesson
+	}
+
+	for _, practiceTask := range practiceTasks {
+		s.practiceTasks[practiceTask.ID] = practiceTask
+	}
+
 	return s
+}
+
+// ListLessons возвращает уроки в порядке их ID.
+func (s *Storage) ListLessons() []domain.Lesson {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	items := make([]domain.Lesson, 0, len(s.lessons))
+	for _, lesson := range s.lessons {
+		items = append(items, lesson)
+	}
+
+	sort.Slice(items, func(i, j int) bool {
+		return items[i].ID < items[j].ID
+	})
+
+	return items
+}
+
+// GetLesson возвращает урок по ID.
+func (s *Storage) GetLesson(id int) (domain.Lesson, bool) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	lesson, ok := s.lessons[id]
+	return lesson, ok
 }
 
 // ListTopics возвращает темы в порядке их ID.
@@ -49,6 +87,15 @@ func (s *Storage) ListTopics() []domain.Topic {
 	})
 
 	return items
+}
+
+// GetTopic возвращает тему по ID.
+func (s *Storage) GetTopic(id int) (domain.Topic, bool) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	topic, ok := s.topics[id]
+	return topic, ok
 }
 
 // ListQuestions возвращает вопросы в порядке их ID.
@@ -75,6 +122,15 @@ func (s *Storage) GetQuestion(id int) (domain.Question, bool) {
 
 	question, ok := s.questions[id]
 	return question, ok
+}
+
+// GetPracticeTask возвращает практическое задание по ID.
+func (s *Storage) GetPracticeTask(id int) (domain.PracticeTask, bool) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	practiceTask, ok := s.practiceTasks[id]
+	return practiceTask, ok
 }
 
 // SaveReview сохраняет результат повторения.
