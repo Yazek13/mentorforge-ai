@@ -1,0 +1,167 @@
+{{define "progress"}}
+{{template "layout-start" .}}
+<div class="progress-page">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a>
+        <span aria-hidden="true">/</span>
+        <span>Мой прогресс</span>
+    </nav>
+
+    <header class="progress-hero">
+        <div>
+            <p class="eyebrow">Technical Career Map</p>
+            <h1>Мой прогресс</h1>
+            <p class="progress-hero__lead">Карта реальных знаний, выполненных задач и следующих инженерных возможностей.</p>
+        </div>
+        <div class="snapshot-note">
+            <span>Snapshot наставника</span>
+            <strong>{{.Plan.Snapshot.Date}}</strong>
+        </div>
+    </header>
+
+    <p class="assessment-note">
+        Проценты — рабочая оценка прогресса MentorForge, основанная на выполненных учебных задачах и текущих инженерных навыках.
+    </p>
+
+    <section class="progress-focus-grid" aria-label="Текущая стадия и следующий этап">
+        <article class="career-stage-card">
+            <p class="eyebrow">Current Stage · {{.Plan.CurrentStage.Stage.Code}}</p>
+            <h2>{{.Plan.CurrentStage.Stage.Title}}</h2>
+            <p class="career-stage-card__description">{{.Plan.CurrentStage.Stage.Description}}</p>
+            <p>{{.Plan.CurrentStage.Stage.Focus}}</p>
+            {{if .Plan.CurrentStage.HasNext}}
+            <div class="stage-distance">
+                <span>До следующего этапа</span>
+                <strong>{{.Plan.CurrentStage.PointsToNext}} процентных пунктов</strong>
+                <small>Следующий уровень: {{.Plan.CurrentStage.NextTitle}}</small>
+            </div>
+            {{end}}
+        </article>
+
+        <article class="next-objective-card">
+            <p class="eyebrow">Следующий этап</p>
+            <h2>{{.Objective.Title}}</h2>
+            <div class="objective-goal">
+                <strong>Цель</strong>
+                <p>{{.Objective.Goal}}</p>
+            </div>
+            {{if .Objective.LessonAvailable}}
+            <a class="button button--primary" href="{{.Objective.LessonURL}}">Открыть урок: {{.Objective.LessonTitle}}</a>
+            {{else}}
+            <p class="objective-unavailable">Следующий урок ещё не добавлен.</p>
+            {{end}}
+        </article>
+    </section>
+
+    <section class="progress-section" aria-labelledby="tracks-title">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Mentor assessment</p>
+                <h2 id="tracks-title">Основные направления</h2>
+            </div>
+            <p>Шкалы отражают текущую оценку навыков, а не количество кликов или открытых страниц.</p>
+        </div>
+
+        <div class="track-grid">
+            {{range .Plan.Snapshot.Tracks}}
+            <article class="track-card track-card--{{.ID}}">
+                <header class="track-card__header">
+                    <h3>{{.Title}}</h3>
+                    <strong>{{.Percent}}%</strong>
+                </header>
+                <progress max="100" value="{{.Percent}}" aria-label="{{.Title}}: {{.Percent}} процентов">{{.Percent}}%</progress>
+                <p class="track-card__description">{{.Description}}</p>
+                <div class="track-next-goal">
+                    <span>Следующий большой навык</span>
+                    <strong>{{.NextGoal}}</strong>
+                </div>
+
+                {{if .Evidence}}
+                <details class="track-evidence">
+                    <summary>Уже изучено на базовом уровне</summary>
+                    <ul>
+                        {{range .Evidence}}<li>{{.}}</li>{{end}}
+                    </ul>
+                </details>
+                {{end}}
+
+                {{if .Roadmap}}
+                <div class="track-roadmap">
+                    <span class="track-roadmap__label">Roadmap</span>
+                    <ol>
+                        {{range .Roadmap}}<li>{{.}}</li>{{end}}
+                    </ol>
+                </div>
+                {{end}}
+            </article>
+            {{end}}
+        </div>
+    </section>
+
+    <section class="progress-section" aria-labelledby="job-roadmap-title">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Job Search Roadmap</p>
+                <h2 id="job-roadmap-title">Готовность к поиску работы</h2>
+            </div>
+            <p>Цель для начала первых системных откликов: примерно 60% Job Readiness. 100% не является требованием для начала поиска.</p>
+        </div>
+
+        <ol class="job-roadmap">
+            {{range .Plan.JobSearchRoadmap}}
+            <li class="job-roadmap__stage {{if .Current}}is-current{{end}}" {{if .Current}}aria-current="step"{{end}}>
+                <span>{{.RangeLabel}}%</span>
+                <strong>{{.Title}}</strong>
+                {{if .Current}}<small>CURRENT STAGE →</small>{{end}}
+            </li>
+            {{end}}
+        </ol>
+        <p class="roadmap-caution">60% — ориентир для начала системных откликов, а не гарантия получения работы.</p>
+    </section>
+
+    <section class="progress-section verified-learning" aria-labelledby="verified-title">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Browser evidence</p>
+                <h2 id="verified-title">Подтверждено в MentorForge</h2>
+            </div>
+            <p>Здесь отдельно показаны только полностью завершённые уроки из localStorage этого браузера. Они не пересчитывают mentor assessment.</p>
+        </div>
+        <div class="verified-learning__panel">
+            <p data-verified-summary role="status" aria-live="polite">Проверяем локальные результаты…</p>
+            <ol data-verified-list></ol>
+            <p data-verified-empty hidden>Завершённые уроки пока не найдены в этом браузере.</p>
+        </div>
+    </section>
+
+    <section class="progress-section ai-journey" aria-labelledby="ai-journey-title">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">MentorForge Agent roadmap</p>
+                <h2 id="ai-journey-title">Путь к своему AI</h2>
+            </div>
+            <p>Это capability roadmap MentorForge Agent, а не процент карьерной готовности.</p>
+        </div>
+
+        <div class="ai-journey__summary">
+            <strong>{{.Plan.AIJourneyComplete}} из {{.Plan.AIJourneyTotal}} стадий подтверждены кодом</strong>
+            <span>Текущая граница: {{.Plan.AIJourneyCurrent}} · следующий рубеж: {{.Plan.AIJourneyNext}}</span>
+        </div>
+        <ol class="ai-journey__list">
+            {{range .Plan.AIJourney}}
+            <li class="ai-journey__stage ai-journey__stage--{{.StatusClass}}">
+                <span class="ai-journey__number">{{.Number}}</span>
+                <div>
+                    <h3>{{.Title}}</h3>
+                    <p>{{.Description}}</p>
+                </div>
+                <strong class="ai-status">{{.StatusLabel}}</strong>
+            </li>
+            {{end}}
+        </ol>
+    </section>
+</div>
+<script type="application/json" id="mentorforge-progress-lessons">{{.VerifiedLessons}}</script>
+<script src="/static/progress.js" defer></script>
+{{template "layout-end" .}}
+{{end}}

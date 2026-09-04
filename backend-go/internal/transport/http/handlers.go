@@ -35,6 +35,7 @@ func (h *Handler) Routes() http.Handler {
 	mux := http.NewServeMux()
 	mux.Handle("/static/", http.StripPrefix("/static/", h.staticFiles))
 	mux.HandleFunc("/health", h.handleHealth)
+	mux.HandleFunc("/progress", h.handleProgressPage)
 	mux.HandleFunc("/topics", h.handleTopics)
 	mux.HandleFunc("/topics/", h.handleTopicPage)
 	mux.HandleFunc("/questions", h.handleQuestions)
