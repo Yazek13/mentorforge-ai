@@ -104,6 +104,8 @@ type Plan struct {
 	AIJourneyTotal    int
 	AIJourneyCurrent  string
 	AIJourneyNext     string
+	JobReadiness      int
+	FirstApplications int
 }
 
 // CurrentPlan is the single Go-side source for the v1 assessment and roadmaps.
@@ -111,6 +113,7 @@ func CurrentPlan() Plan {
 	snapshot := currentSnapshot()
 	jobReadiness := trackPercent(snapshot.Tracks, TrackJob)
 	journey := currentAIJourney()
+	current, next := journeyFrontier(journey)
 
 	return Plan{
 		Snapshot:          snapshot,
@@ -120,8 +123,10 @@ func CurrentPlan() Plan {
 		AIJourney:         journey,
 		AIJourneyComplete: countJourneyStatus(journey, JourneyComplete),
 		AIJourneyTotal:    len(journey),
-		AIJourneyCurrent:  "Replaceable ModelProvider",
-		AIJourneyNext:     "Self-hosted model",
+		AIJourneyCurrent:  current,
+		AIJourneyNext:     next,
+		JobReadiness:      jobReadiness,
+		FirstApplications: firstApplicationsPercent,
 	}
 }
 
@@ -173,7 +178,7 @@ func currentSnapshot() AssessmentSnapshot {
 				TrackAI,
 				"AI Engineer",
 				6,
-				"Освоены базовые понятия model, inference, prompt, embeddings и RAG; собственная AI-система ещё не построена.",
+				"Начальная оценка наставника. В проекте есть вводные материалы по AI/ML; их наличие само по себе не подтверждает освоение навыков.",
 				"Разобрать self-hosted inference и open-weight model",
 				nil,
 				[]string{
@@ -206,13 +211,15 @@ func newTrack(id, title string, percent int, description, nextGoal string, evide
 	}
 }
 
+const firstApplicationsPercent = 60
+
 func careerStages() []CareerStage {
 	return []CareerStage{
 		{Code: "Foundation", Title: "Фундамент", MinPercent: 0, MaxPercent: 19, Description: "Пока рано искать работу.", Focus: "Сейчас цель — получить устойчивый Go/Python/backend foundation."},
 		{Code: "Apprentice Engineer", Title: "Ученик-инженер", MinPercent: 20, MaxPercent: 34, Description: "Базовые знания складываются в систему.", Focus: "Связывайте язык, проектную структуру и небольшие законченные задачи."},
 		{Code: "Junior Track", Title: "Junior Track", MinPercent: 35, MaxPercent: 49, Description: "Начинаются полноценные инженерные задачи.", Focus: "Нужны проверяемые backend-задачи и уверенное объяснение решений."},
 		{Code: "Job Search Preparation", Title: "Предстарт поиска", MinPercent: 50, MaxPercent: 59, Description: "Готовим проекты, резюме и разбираем вакансии.", Focus: "Закройте ключевые пробелы и подготовьте доказательства практических навыков."},
-		{Code: "Ready for Applications", Title: "Готов к первым откликам", MinPercent: 60, MaxPercent: 74, Description: "Можно системно искать Junior / Junior+ позиции.", Focus: "Продолжайте учиться параллельно с первыми целевыми откликами."},
+		{Code: "Ready for Applications", Title: "Готов к первым откликам", MinPercent: firstApplicationsPercent, MaxPercent: 74, Description: "Можно системно искать Junior / Junior+ позиции.", Focus: "Продолжайте учиться параллельно с первыми целевыми откликами."},
 		{Code: "Working Engineer", Title: "Рабочий инженер", MinPercent: 75, MaxPercent: 89, Description: "Есть практический backend foundation.", Focus: "Углубляйте надёжность, эксплуатацию и архитектурные решения."},
 		{Code: "AI / Backend Engineer", Title: "AI / Backend Engineer", MinPercent: 90, MaxPercent: 96, Description: "Можно проектировать более сложные системы.", Focus: "Развивайте system design и полный жизненный цикл AI/backend решений."},
 		{Code: "AI Architect", Title: "AI Architect", MinPercent: 97, MaxPercent: 100, Description: "Строит собственную AI-систему.", Focus: "Соединяйте модели, данные, инструменты, evals и production infrastructure."},
@@ -265,7 +272,7 @@ func currentJobSearchRoadmap(percent int) []JobSearchStage {
 		{MinPercent: 20, MaxPercent: 34, RangeLabel: "20–34", Title: "Ученик-инженер"},
 		{MinPercent: 35, MaxPercent: 49, RangeLabel: "35–49", Title: "Junior Track"},
 		{MinPercent: 50, MaxPercent: 59, RangeLabel: "50–59", Title: "Предстарт поиска"},
-		{MinPercent: 60, MaxPercent: 74, RangeLabel: "60–74", Title: "Первые отклики"},
+		{MinPercent: firstApplicationsPercent, MaxPercent: 74, RangeLabel: "60–74", Title: "Первые отклики"},
 		{MinPercent: 75, MaxPercent: 89, RangeLabel: "75–89", Title: "Активный поиск / инженерная работа"},
 		{MinPercent: 90, MaxPercent: 100, RangeLabel: "90–100", Title: "Сильный инженерный профиль"},
 	}
@@ -276,10 +283,12 @@ func currentJobSearchRoadmap(percent int) []JobSearchStage {
 }
 
 func currentAIJourney() []AIJourneyStage {
+	// Audited against repository capabilities, not lesson topics. In-memory
+	// learning storage is not agent memory, and Go tests are not model evals.
 	return []AIJourneyStage{
 		{Number: 1, Title: "Learning Core", Status: JourneyComplete, Description: "Learning service, Lessons, Questions и PracticeTask существуют."},
-		{Number: 2, Title: "AI Tutor architecture", Status: JourneyComplete, Description: "TutorService и явный tutor workflow реализованы."},
-		{Number: 3, Title: "Replaceable ModelProvider", Status: JourneyComplete, Description: "TutorService зависит от интерфейса ModelProvider; облачный adapter заменяем."},
+		{Number: 2, Title: "AI Tutor architecture", Status: JourneyLocked, Description: "Следующий рубеж: создать TutorService и tutor workflow. В текущем коде их нет."},
+		{Number: 3, Title: "Replaceable ModelProvider", Status: JourneyLocked, Description: "Интерфейс ModelProvider и адаптеры моделей пока не реализованы."},
 		{Number: 4, Title: "Self-hosted model", Status: JourneyLocked, Description: "Local/self-hosted provider в repository пока отсутствует."},
 		{Number: 5, Title: "RAG / Knowledge", Status: JourneyLocked, Description: "Runtime knowledge retrieval пока не реализован."},
 		{Number: 6, Title: "Memory", Status: JourneyLocked, Description: "Память AI Agent пока не реализована."},
@@ -289,6 +298,17 @@ func currentAIJourney() []AIJourneyStage {
 		{Number: 10, Title: "MentorForge Model v1", Status: JourneyLocked, Description: "Собственная модель пока не создана."},
 		{Number: 11, Title: "Production Server", Status: JourneyLocked, Description: "Production deployment AI-системы пока не реализован."},
 	}
+}
+
+// The frontier follows the first unfinished milestone, not the number of clicks.
+func journeyFrontier(stages []AIJourneyStage) (current, next string) {
+	for _, stage := range stages {
+		if stage.Status != JourneyComplete {
+			return current, stage.Title
+		}
+		current = stage.Title
+	}
+	return current, ""
 }
 
 func clampPercent(percent int) int {

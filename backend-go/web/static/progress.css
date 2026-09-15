@@ -1,6 +1,15 @@
 .progress-page {
     width: min(100%, 1080px);
     margin: 0 auto;
+    overflow-wrap: anywhere;
+}
+
+.job-readiness-summary {
+    margin-bottom: 18px;
+}
+
+.job-readiness-summary progress {
+    margin-bottom: 0;
 }
 
 .progress-hero {

@@ -104,9 +104,13 @@
                 <p class="eyebrow">Job Search Roadmap</p>
                 <h2 id="job-roadmap-title">Готовность к поиску работы</h2>
             </div>
-            <p>Цель для начала первых системных откликов: примерно 60% Job Readiness. 100% не является требованием для начала поиска.</p>
+            <p>Цель для начала первых системных откликов: примерно {{.Plan.FirstApplications}}% Job Readiness. Полная готовность не является требованием для начала поиска.</p>
         </div>
 
+        <div class="track-card job-readiness-summary">
+            <strong>Job Readiness: {{.Plan.JobReadiness}}%</strong>
+            <progress max="100" value="{{.Plan.JobReadiness}}" aria-label="Готовность к поиску работы: {{.Plan.JobReadiness}} процентов">{{.Plan.JobReadiness}}%</progress>
+        </div>
         <ol class="job-roadmap">
             {{range .Plan.JobSearchRoadmap}}
             <li class="job-roadmap__stage {{if .Current}}is-current{{end}}" {{if .Current}}aria-current="step"{{end}}>
@@ -116,7 +120,7 @@
             </li>
             {{end}}
         </ol>
-        <p class="roadmap-caution">60% — ориентир для начала системных откликов, а не гарантия получения работы.</p>
+        <p class="roadmap-caution">{{.Plan.FirstApplications}}% — ориентир для начала системных откликов, а не гарантия получения работы. 100% не требуется.</p>
     </section>
 
     <section class="progress-section verified-learning" aria-labelledby="verified-title">
@@ -125,12 +129,13 @@
                 <p class="eyebrow">Browser evidence</p>
                 <h2 id="verified-title">Подтверждено в MentorForge</h2>
             </div>
-            <p>Здесь отдельно показаны только полностью завершённые уроки из localStorage этого браузера. Они не пересчитывают mentor assessment.</p>
+            <p>Здесь показаны завершённые уроки по записям этого браузера: лекция прочитана, ответы зафиксированы, практика сохранена как завершённая. Это не проверка правильности решений наставником и не пересчёт mentor assessment.</p>
         </div>
         <div class="verified-learning__panel">
             <p data-verified-summary role="status" aria-live="polite">Проверяем локальные результаты…</p>
             <ol data-verified-list></ol>
             <p data-verified-empty hidden>Завершённые уроки пока не найдены в этом браузере.</p>
+            <noscript>Включите JavaScript для просмотра локального состояния уроков. Оценка наставника доступна без JavaScript.</noscript>
         </div>
     </section>
 
@@ -145,7 +150,7 @@
 
         <div class="ai-journey__summary">
             <strong>{{.Plan.AIJourneyComplete}} из {{.Plan.AIJourneyTotal}} стадий подтверждены кодом</strong>
-            <span>Текущая граница: {{.Plan.AIJourneyCurrent}} · следующий рубеж: {{.Plan.AIJourneyNext}}</span>
+            <span>{{if .Plan.AIJourneyCurrent}}Текущая граница: {{.Plan.AIJourneyCurrent}}{{else}}Первый рубеж ещё не завершён{{end}}{{if .Plan.AIJourneyNext}} · следующий рубеж: {{.Plan.AIJourneyNext}}{{end}}</span>
         </div>
         <ol class="ai-journey__list">
             {{range .Plan.AIJourney}}

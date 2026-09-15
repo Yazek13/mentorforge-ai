@@ -2,6 +2,8 @@
 
 (function () {
     document.addEventListener("DOMContentLoaded", initializeVerifiedLearning);
+    window.addEventListener("storage", initializeVerifiedLearning);
+    window.addEventListener("pageshow", initializeVerifiedLearning);
 
     function initializeVerifiedLearning() {
         const dataElement = document.getElementById("mentorforge-progress-lessons");
@@ -13,6 +15,7 @@
         if (!dataElement || !summary || !list || !empty) {
             return;
         }
+        list.replaceChildren();
         if (!storage) {
             showUnavailable(summary, empty);
             return;
@@ -40,7 +43,10 @@
                 const practice = storage.readPracticeSubmission(lesson.practice_task_id);
                 const lessonComplete = storage.isLessonRead(lesson.id)
                     && storage.allQuestionsSubmitted(lesson.question_ids)
-                    && Boolean(practice && practice.submitted);
+                    && Boolean(practice && practice.submitted
+                        && practice.solution.trim() !== ""
+                        && practice.task_id === lesson.practice_task_id
+                        && practice.lesson_id === lesson.id);
                 if (lessonComplete) {
                     completed.push(lesson);
                 }
@@ -64,7 +70,7 @@
             link.href = lesson.url;
             link.textContent = lesson.title;
             state.textContent = "COMPLETE ✓";
-            details.textContent = "Лекция, " + lesson.question_ids.length + " ответов и практика подтверждены локально.";
+            details.textContent = "Лекция, " + lesson.question_ids.length + " ответов и практика отмечены завершёнными в этом браузере.";
 
             item.append(link, state, details);
             list.append(item);
@@ -77,8 +83,10 @@
             && lesson.id > 0
             && typeof lesson.title === "string"
             && typeof lesson.url === "string"
+            && lesson.url === "/lessons/" + lesson.id
             && Array.isArray(lesson.question_ids)
             && lesson.question_ids.length > 0
+            && lesson.question_ids.every(function (id) { return Number.isInteger(id) && id > 0; })
             && Number.isInteger(lesson.practice_task_id)
             && lesson.practice_task_id > 0;
     }
